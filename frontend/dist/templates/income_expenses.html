@@ -1,0 +1,34 @@
+<h1>Доходы и расходы</h1>
+
+<div id="create_income_expenses">
+    <a href="#/create_income" class="btn btn-success" id="create_income">Создать доход</a>
+    <a href="#/create_expense" class="btn btn-danger" id="create_expenses">Создать расход</a>
+</div>
+
+<ul id="time">
+    <li id="today">Сегодня</li>
+    <li id="week">Неделя</li>
+    <li id="month">Месяц</li>
+    <li id="year">Год</li>
+    <li id="all" class="time-chosen">Все</li>
+    <li id="interval">Интервал</li>
+    <div id="datepicker-toggle">
+        <label for="time-from">с <span id="time-from-date">Дата</span></label>
+        <input type="date" min="" id="time-from">
+        <label for="time-before">по <span id="time-before-date">Дата</span></label>
+        <input type="date" id="time-before">
+    </div>
+</ul>
+
+<div id="income_expenses_operations" class="container">
+    <div class="headers">
+        <span class="in_ex_number">№ операции</span>
+        <span class="in_ex_type">Тип</span>
+        <span class="in_ex_category">Категории</span>
+        <span class="in_ex_sum">Сумма</span>
+        <span class="in_ex_date">Дата</span>
+        <span class="in_ex_comment">Комментарий</span>
+        <span class="in_ex_action"></span>
+    </div>
+</div>
+

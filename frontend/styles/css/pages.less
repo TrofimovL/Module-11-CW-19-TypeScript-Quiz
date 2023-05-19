@@ -1,0 +1,406 @@
+@import "params";
+
+#time {
+  margin-top: 30px;
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  padding-left: 0;
+  margin-bottom: 70px;
+
+  li {
+    padding: 9px 24px;
+    color: @color-time;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid @color-time;
+    border-radius: 4px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+
+    &.time-chosen {
+      padding: 9px 24px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      background-color: @color-time;
+      border: 1px solid @color-time;
+      border-radius: 4px;
+    }
+
+    &:hover {
+      color: white;
+      background-color: @color-time-hover; // !!!
+    }
+  }
+
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    font-weight: 500;
+    font-size: 16px;
+    position: relative;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+
+      span {
+        width: max-content;
+        color: @color-time;
+        text-decoration: underline;
+      }
+    }
+
+    input {
+      display: inline;
+      position: absolute;
+      //left: 60%;
+      top: 0;
+      //width: 40%;
+      height: 100%;
+
+      &#time-from {
+        left: 0;
+        width: 50%;
+      }
+
+      &#time-before {
+        left: 55%;
+        width: 50%;
+      }
+
+      opacity: 0;
+      cursor: pointer;
+      box-sizing: border-box;
+
+      &::-webkit-calendar-picker-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+
+
+    }
+  }
+
+}
+
+#create_income_expenses {
+  display: flex;
+  gap: 10px;
+  margin: 40px 0 40px 0;
+
+
+  a {
+    //cursor: pointer;
+    height: 38px;
+    padding: 11px 16px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    //border: 0;
+    //border-radius: 5px;
+    text-decoration: none;
+
+
+  }
+}
+
+#create_in_or_ex {
+  padding-top: 10px;
+
+  input {
+    margin-bottom: 10px;
+    width: 400px;
+    height: 38px;
+    padding: 7px 16px;
+    border-radius: 5px;
+    border: 1px solid @color-border;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 24px;
+
+    &::placeholder {
+      color: @color-time;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  #create_expense_buttons {
+    padding-top: 10px;
+    display: flex;
+    gap: 10px;
+
+    button {
+      padding: 11px 16px;
+      font-weight: 500;
+
+      &[class~='btn-no-click'] {
+        cursor: not-allowed;
+        border: none;
+        border-radius: 5px;
+        background-color: @color-gray;
+        color: black;
+      }
+
+    }
+  }
+
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  .card {
+    width: 350px;
+    height: 120px;
+
+    .card-body {
+
+
+      h2 {
+        font-weight: 500;
+
+      }
+
+      div {
+        gap: 20px;
+
+        a {
+          font-weight: 500;
+          padding: 11px 16px;
+        }
+      }
+    }
+  }
+
+  #add-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    svg {
+      width: 16px;
+      aspect-ratio: 1/1;
+      transition-duration: 0.2s;
+
+    }
+
+    &:hover {
+      svg {
+        width: 25px;
+      }
+    }
+  }
+
+
+}
+
+#delete_category_window {
+  background-color: @color-gray;
+  margin: auto;
+  padding: 40px;
+  width: 600px;
+  //background-color: white;
+  color: @color-blue-darker;
+  font-weight: 500;
+  line-height: 23px;
+  border-radius: 10px;
+  text-align: center;
+
+  p, p span {
+    font-size: 20px;
+  }
+
+  div {
+    button {
+      font-size: 14px;
+      border: 0;
+      padding: 11px 16px;
+      color: white;
+      border-radius: 5px;
+      margin: 20px 5px 0 5px;
+
+    }
+
+    //#income_delete {
+    //  background-color: #198754;
+    //}
+    //
+    //#income_dont_delete {
+    //  background-color: #DC3545;
+    //}
+
+  }
+
+}
+
+#income_expenses_operations {
+  font-size: 16px;
+  line-height: 19px;
+  border-top: 1px solid @color-border;
+
+  div:first-child {
+    color: @color-blue-dark;
+    font-weight: 700;
+    letter-spacing: 1.33333px;
+    text-align: center;
+
+
+  }
+
+  div {
+    padding: 12px 0 14px 0;
+    border-bottom: 1px solid @color-border;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 5fr 1fr;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      text-align: center;
+    }
+
+    .in_ex_number {
+      font-weight: 700;
+    }
+
+    .in_ex_type_income {
+      color: @color-green;
+    }
+
+    .in_ex_type_expense {
+      color: @color-red;
+    }
+
+    .in_ex_action svg:hover {
+      cursor: pointer;
+
+      path {
+        fill: @color-blue;
+      }
+    }
+
+  }
+
+
+}
+
+
+#main-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 140px;
+  margin-bottom: 20px;
+
+  h2 {
+    text-align: center;
+    color: @color-blue-darker;
+  }
+
+  h5 {
+    margin-top: 100px;
+    text-align: center;
+
+  }
+
+  .main-denote {
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 400px;
+
+    div {
+      display: inline-block;
+      width: 35px;
+      height: 10px;
+      padding-right: 10px;
+    }
+
+    span {
+      padding-right: 15px;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+
+  }
+
+  #main-divider {
+    display: inline-block;
+    height: 450px;
+    border: 1px solid @color-border;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
