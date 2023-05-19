@@ -1,6 +1,7 @@
 import {SidebarManager} from "../services/sidebar-manager";
-import {words} from "./words";
 import {CustomHttp} from "../services/custom-http";
+import {InExEnum} from "../enums/in-ex.enum";
+import {ConfigEnum} from "../enums/config.enum";
 
 const $ = require('../modules/jquery-3.6.4.min');
 
@@ -9,21 +10,21 @@ export class CreateCategoryInOrEx {
 
     private input: JQuery;
     private actionBtn: JQuery;
+    readonly btnNoClick: string = 'btn-no-click';
 
-    constructor(page: 'income' | 'expense' | 'edit_income' | 'edit_expense') {
-
+    constructor(page: InExEnum.income | InExEnum.expense | InExEnum.edit_income | InExEnum.edit_expense) {
 
         this.input = $('#create-in-or-ex-input');
         this.actionBtn = $('#btn-create');
-        if (page === words.income || page === words.expense){
-            this.actionBtn.addClass(words.btnNoClick);
+        if (page === InExEnum.income || page === InExEnum.expense){
+            this.actionBtn.addClass(this.btnNoClick);
         }
 
         this.input.on('change', () => {
             if (this.input.val()) {
-                this.actionBtn.removeClass(words.btnNoClick);
+                this.actionBtn.removeClass(this.btnNoClick);
             } else {
-                this.actionBtn.addClass(words.btnNoClick);
+                this.actionBtn.addClass(this.btnNoClick);
             }
         })
 
@@ -36,14 +37,14 @@ export class CreateCategoryInOrEx {
             history.back();
         })
 
-        if (page === words.income) $('h1').text('Создание категории доходов');
-        if (page === words.expense) $('h1').text('Создание категории расходов');
-        if (page === words.edit_income) $('h1').text('Редактирование категории доходов');
-        if (page === words.edit_expense) $('h1').text('Редактирование категории расходов');
+        if (page === InExEnum.income) $('h1').text('Создание категории доходов');
+        if (page === InExEnum.expense) $('h1').text('Создание категории расходов');
+        if (page === InExEnum.edit_income) $('h1').text('Редактирование категории доходов');
+        if (page === InExEnum.edit_expense) $('h1').text('Редактирование категории расходов');
 
-        if (page === words.income || page === words.expense) {
+        if (page === InExEnum.income || page === InExEnum.expense) {
             this.actionBtn.on('click',() => {
-                if (!this.actionBtn.hasClass(words.btnNoClick)) {
+                if (!this.actionBtn.hasClass(this.btnNoClick)) {
                     const result = this.request(page, '', 'POST', this.input.val() as string);
                     history.back();
                 }
@@ -53,7 +54,7 @@ export class CreateCategoryInOrEx {
         }
 
 
-        if (page === words.edit_income || page === words.edit_expense) {
+        if (page === InExEnum.edit_income || page === InExEnum.edit_expense) {
 
             const urlParams = window.location.href
                 .split('?')[1]
@@ -80,7 +81,7 @@ export class CreateCategoryInOrEx {
 
     private async request(page: string, order: string, method:string, value:string): Promise<void> {
         page = page.replace('edit_', '');
-        await CustomHttp.request(words.b_host + 'categories/' + page + order, method, {
+        await CustomHttp.request(ConfigEnum.backendHost + 'categories/' + page + order, method, {
             title: value
         })
     }

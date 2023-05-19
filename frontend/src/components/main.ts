@@ -1,8 +1,8 @@
 import {SidebarManager} from "../services/sidebar-manager";
 import {TimeIntervals} from "../services/time-intervals";
 import {OperationsPeriodResponseType} from "../types/operations-period-response.type";
-import {words} from "./words";
 import {MainCirclesEnum} from "../enums/main-circles.enum";
+import {InExEnum} from "../enums/in-ex.enum";
 
 const $ = require('../modules/jquery-3.6.4.min');
 
@@ -82,9 +82,9 @@ export class Main {
         let array_expense_raw: OperationsPeriodResponseType[] = [];
 
         array.forEach((item: OperationsPeriodResponseType) => {
-            if (item.type === words.income) {
+            if (item.type === InExEnum.income) {
                 array_income_raw.push(item);
-            } else if (item.type === words.expense) {
+            } else if (item.type === InExEnum.expense) {
                 array_expense_raw.push(item);
             }
         })

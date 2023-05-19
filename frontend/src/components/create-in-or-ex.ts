@@ -1,10 +1,11 @@
 import {SidebarManager} from "../services/sidebar-manager";
-import {words} from "./words";
 import {CustomHttp} from "../services/custom-http";
-
-const $ = require('../modules/jquery-3.6.4.min');
 import {DefaultResponseType} from "../types/default-response.type";
 import {CategoriesResponseType} from "../types/categories-response.type";
+import {InExEnum} from "../enums/in-ex.enum";
+import {ConfigEnum} from "../enums/config.enum";
+
+const $ = require('../modules/jquery-3.6.4.min');
 
 export class CreateInOrEx {
 
@@ -22,18 +23,21 @@ export class CreateInOrEx {
     private actionBtn: JQuery;
     private readonly method: string | undefined;
 
+    readonly btnNoClick: string = 'btn-no-click';
 
-    constructor(page: 'income' | 'expense' | 'edit_income' | 'edit_expense') {
+
+
+    constructor(page: InExEnum.income | InExEnum.expense | InExEnum.edit_income | InExEnum.edit_expense) {
 
         if (!SidebarManager.exists) {
             new SidebarManager();
             SidebarManager.exists = true;
         }
 
-        if (page === words.income) $('h1').text('Создание дохода');
-        if (page === words.expense) $('h1').text('Создание расхода');
-        if (page === words.edit_income) $('h1').text('Редактирование дохода');
-        if (page === words.edit_expense) $('h1').text('Редактирование расхода');
+        if (page === InExEnum.income) $('h1').text('Создание дохода');
+        if (page === InExEnum.expense) $('h1').text('Создание расхода');
+        if (page === InExEnum.edit_income) $('h1').text('Редактирование дохода');
+        if (page === InExEnum.edit_expense) $('h1').text('Редактирование расхода');
 
 
         this.page = page;
@@ -51,7 +55,7 @@ export class CreateInOrEx {
         this.actionBtn = $('#btn-create');
 
 
-        if (this.page === words.edit_income || this.page === words.edit_expense) {
+        if (this.page === InExEnum.edit_income || this.page === InExEnum.edit_expense) {
             const urlParams = window.location.href
                 .split('?')[1]
                 .split('&')
@@ -71,7 +75,7 @@ export class CreateInOrEx {
             this.method = 'PUT';
 
         } else {
-            this.actionBtn.addClass(words.btnNoClick);
+            this.actionBtn.addClass(this.btnNoClick);
             this.method = 'POST';
         }
 
@@ -81,7 +85,8 @@ export class CreateInOrEx {
         });
 
 
-        this.cards.call(this).then(result => {
+        // this.cards.call(this).then(result => {
+        this.cards().then(result => {
             if ((result as DefaultResponseType).error !== undefined) return;
 
             this.cardTitles = (result as CategoriesResponseType[]).map(item => {
@@ -91,7 +96,7 @@ export class CreateInOrEx {
 
         this.actionBtn.on('click', () => {
             if (this.validateFields()) {
-                this.create.call(this).then(()=>{
+                this.create().then(()=>{
                     window.location.href = '#/income_expenses';
                 });
             }
@@ -108,7 +113,7 @@ export class CreateInOrEx {
         let isValid = true;
 
         if (!this.cardTitles) {
-            this.actionBtn.addClass(words.btnNoClick);
+            this.actionBtn.addClass(this.btnNoClick);
             return false;
         }
 
@@ -133,9 +138,9 @@ export class CreateInOrEx {
         if (!this.comment.val()) isValid = false;
 
         if (isValid) {
-            this.actionBtn.removeClass(words.btnNoClick);
+            this.actionBtn.removeClass(this.btnNoClick);
         } else {
-            this.actionBtn.addClass(words.btnNoClick);
+            this.actionBtn.addClass(this.btnNoClick);
         }
 
         return isValid;
@@ -177,7 +182,7 @@ export class CreateInOrEx {
             "category_id": this.categoryId,
         }
 
-        await CustomHttp.request(words.b_host + 'operations' + this.id, this.method, body)
+        await CustomHttp.request(ConfigEnum.backendHost + 'operations' + this.id, this.method, body)
             .then(value => {
                 console.log(`addInOrEx ${value}`);
             })
@@ -188,7 +193,7 @@ export class CreateInOrEx {
         let categoryName: CategoriesResponseType | undefined = undefined;
         let categoryId: number | undefined = undefined;
         try {
-            await CustomHttp.request(words.b_host + 'categories/' + this.pageWithoutEdit, 'GET')
+            await CustomHttp.request(ConfigEnum.backendHost + 'categories/' + this.pageWithoutEdit, 'GET')
                 .then((array: CategoriesResponseType[]) => {
                     categoryName = array.find(item => {
                         if (item.title.toLowerCase() === (this.category.val() as string).toLowerCase()) {
@@ -205,7 +210,7 @@ export class CreateInOrEx {
     }
 
     private async cards(): Promise<DefaultResponseType | CategoriesResponseType[]> {
-        return await CustomHttp.request(words.b_host + 'categories/' + this.pageWithoutEdit, 'GET')
+        return await CustomHttp.request(ConfigEnum.backendHost + 'categories/' + this.pageWithoutEdit, 'GET')
     }
 }
 

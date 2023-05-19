@@ -1,14 +1,16 @@
 import {SidebarManager} from "../services/sidebar-manager";
 import {CustomHttp} from "../services/custom-http";
-import {words} from "./words";
 import {CategoriesResponseType} from "../types/categories-response.type";
+import {InExEnum} from "../enums/in-ex.enum";
+import {ConfigEnum} from "../enums/config.enum";
 
 const $ = require('../modules/jquery-3.6.4.min');
 
 export class Category {
     private readonly page: 'income' | 'expense';
 
-    constructor(page: 'income' | 'expense') {
+    constructor(page: InExEnum.income | InExEnum.expense) {
+
         this.page = page;
 
         $('#popup-category-or-operation').text('категорию');
@@ -24,9 +26,9 @@ export class Category {
             SidebarManager.exists = true;
         }
 
-        if (page === words.expense) {
+        if (page === InExEnum.expense) {
             $('h1').text('Расходы');
-            $('#income-cards').attr('id', `${words.expense}-cards`);
+            $('#income-cards').attr('id', `${InExEnum.expense}-cards`);
             $('#popup-income-or-expenses').text('расходы');
         } else {
             $('#popup-income-or-expenses').text('доходы');
@@ -47,10 +49,10 @@ export class Category {
     }
 
     private async createCards(page: 'income' | 'expense'): Promise<void> {
-        let cardsWrapper = (page === words.income ? $('#income-cards') : $('#expense-cards'));
+        let cardsWrapper = (page === InExEnum.income ? $('#income-cards') : $('#expense-cards'));
 
         const that = this;
-        await CustomHttp.request(words.b_host + 'categories/' + page, 'GET')
+        await CustomHttp.request(ConfigEnum.backendHost + 'categories/' + page, 'GET')
             .then((cardsArray: CategoriesResponseType[]) => {
                 try {
                     cardsArray.forEach((item) => {
@@ -89,7 +91,7 @@ export class Category {
 
     async deleteCard(id: number, page: 'income' | 'expense') {
         try {
-            await CustomHttp.request(`${words.b_host}categories/${page}/${id}`, 'DELETE');
+            await CustomHttp.request(`${ConfigEnum.backendHost}categories/${page}/${id}`, 'DELETE');
         } catch (e) {
             console.log(e);
         }

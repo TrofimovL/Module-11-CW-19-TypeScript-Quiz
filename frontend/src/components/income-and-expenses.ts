@@ -1,8 +1,7 @@
 import {SidebarManager} from "../services/sidebar-manager";
 import {TimeIntervals} from "../services/time-intervals";
-import {CustomHttp} from "../services/custom-http";
-import {words} from "./words";
 import {OperationsPeriodResponseType} from "../types/operations-period-response.type";
+import {InExEnum} from "../enums/in-ex.enum";
 
 const $ = require('../modules/jquery-3.6.4.min');
 
@@ -85,7 +84,7 @@ export class IncomeAndExpenses {
             })
 
             $(`#${item.id}-delete`).on('click', () => {
-                if (item.type === words.income) {
+                if (item.type === InExEnum.income) {
                     $('#popup-income-or-expenses').text('доходы');
                 } else {
                     $('#popup-income-or-expenses').text('расходы');

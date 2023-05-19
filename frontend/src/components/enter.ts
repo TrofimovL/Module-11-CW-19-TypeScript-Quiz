@@ -1,18 +1,20 @@
 import {CustomHttp} from "../services/custom-http";
-import {words} from "./words";
 import {Auth} from "../services/auth";
 import {SidebarManager} from "../services/sidebar-manager";
 import {EnterFieldType} from "../types/enter-field.type";
 import {DefaultResponseType} from "../types/default-response.type";
 import {SignupResponseType} from "../types/signup-response.type";
 import {LoginResponseType} from "../types/login-response.type";
+import {AuthEnum} from "../enums/auth.enum";
+import {UserInfoEnum} from "../enums/user-info.enum";
+import {ConfigEnum} from "../enums/config.enum";
 
 const $ = require('../modules/jquery-3.6.4.min');
 
 export class Enter {
     static authError = false;
 
-    private readonly page: 'login' | 'signup';
+    private readonly page: AuthEnum.login | AuthEnum.signup;
     private title: JQuery;
     private formDetails: JQuery;
     private name: JQuery | undefined = undefined;
@@ -25,7 +27,8 @@ export class Enter {
     private sidebar: JQuery;
     private fields: EnterFieldType[];
 
-    constructor(page: 'login' | 'signup') {
+    constructor(page: AuthEnum.login | AuthEnum.signup) {
+
         this.page = page;
         this.title = $('#title-enter');
         this.formDetails = $('#form-details');
@@ -40,20 +43,19 @@ export class Enter {
             location.href = '#/';
         } else {
             this.sidebar.hide();
-            // SidebarManager.exists = false;
         }
 
 
         this.fields = [{
-            name: words.email,
-            id: words.email,
+            name: UserInfoEnum.email,
+            id: UserInfoEnum.email,
             element: this.email,
             regex: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
             valid: true,
             message: 'Неверная почта'
         }, {
-            name: words.password,
-            id: words.password,
+            name: UserInfoEnum.password,
+            id: UserInfoEnum.password,
             element: this.password,
             regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
             valid: true,
@@ -122,8 +124,8 @@ export class Enter {
         this.divChange.html('Уже есть аккаунт?\n' + '            <a id="button-change-type" href="#/login">\n' + '                Войдите в систему\n' + '            </a>')
 
         this.fields.unshift({
-            name: words.name,
-            id: words.name,
+            name: UserInfoEnum.name,
+            id: UserInfoEnum.name,
             element: this.name,
             regex: /^[А-Я][а-яё]{2,}\s*[А-Я][а-яё]{2,}\s*[А-Я]{0,1}[а-яё]*$/,
             valid: true,
@@ -131,8 +133,8 @@ export class Enter {
         });
 
         this.fields.push({
-            name: words.passwordConfirm,
-            id: words.passwordConfirm,
+            name: UserInfoEnum.passwordConfirm,
+            id: UserInfoEnum.passwordConfirm,
             element: this.repeatPassword,
             regex: /\s*/,
             valid: true,
@@ -148,7 +150,7 @@ export class Enter {
         this.fields.forEach((item) => {
 
             let condition = !item.regex.test((item.element.val() as string).trim());
-            if (item.name === words.passwordConfirm) {
+            if (item.name === UserInfoEnum.passwordConfirm) {
                 condition = that.password.val() !== item.element.val();
             }
 
@@ -171,10 +173,10 @@ export class Enter {
 
     async enter() {
         if (this.validateFields()) {
-            if (this.page === words.signup) {
+            if (this.page === AuthEnum.signup) {
                 try {
                     const nameData = (this.name!.val() as string).split(' ');
-                    const result: DefaultResponseType | SignupResponseType = await CustomHttp.request(words.b_host + words.signup, 'POST', {
+                    const result: DefaultResponseType | SignupResponseType = await CustomHttp.request(ConfigEnum.backendHost + AuthEnum.signup, 'POST', {
                         name: nameData[1],
                         lastName: nameData[0],
                         email: this.email.val(),
@@ -194,7 +196,7 @@ export class Enter {
 
 
             try {
-                const result: DefaultResponseType| LoginResponseType = await CustomHttp.request(words.b_host + words.login, 'POST', {
+                const result: DefaultResponseType| LoginResponseType = await CustomHttp.request(ConfigEnum.backendHost + AuthEnum.login, 'POST', {
                     email: this.email.val(),
                     password: this.password.val(),
                     rememberMe: this.rememberMe.prop('checked')

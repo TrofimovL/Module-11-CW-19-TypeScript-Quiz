@@ -5,8 +5,10 @@ import {Main} from "./components/main";
 import {Auth} from "./services/auth";
 import {IncomeAndExpenses} from "./components/income-and-expenses";
 import {Category} from "./components/category";
-import {words} from "./components/words";
 import {RouteType} from "./types/route.type";
+import {AuthEnum} from "./enums/auth.enum";
+import {InExEnum} from "./enums/in-ex.enum";
+import {UserInfoEnum} from "./enums/user-info.enum";
 
 
 export class Router {
@@ -25,13 +27,13 @@ export class Router {
                 route: '#/login',
                 title: 'Вход',
                 template: 'templates/enter.html',
-                load: () => new Enter('login')
+                load: () => new Enter(AuthEnum.login)
             },
             {
                 route: '#/signup',
                 title: 'Регистрация',
                 template: 'templates/enter.html',
-                load: () => new Enter('signup')
+                load: () => new Enter(AuthEnum.signup)
             },
             {
                 route: '#/',
@@ -49,61 +51,61 @@ export class Router {
                 route: '#/income',
                 title: 'Доходы',
                 template: 'templates/category.html',
-                load: () => new Category("income")
+                load: () => new Category(InExEnum.income)
             },
             {
                 route: '#/expenses',
                 title: 'Расходы',
                 template: 'templates/category.html',
-                load: () => new Category("expense")
+                load: () => new Category(InExEnum.expense)
             },
             {
                 route: '#/create_category_income',
                 title: 'Создание категории доходов',
                 template: 'templates/category_in_or_ex.html',
-                load: () => new CreateCategoryInOrEx('income')
+                load: () => new CreateCategoryInOrEx(InExEnum.income)
             },
             {
                 route: '#/create_category_expense',
                 title: 'Создание категории расходов',
                 template: 'templates/category_in_or_ex.html',
-                load: () => new CreateCategoryInOrEx('expense')
+                load: () => new CreateCategoryInOrEx(InExEnum.expense)
             },
             {
                 route: '#/create_category_expense_edit',
                 title: 'Редактирование категории расходов',
                 template: 'templates/category_in_or_ex.html',
-                load: () => new CreateCategoryInOrEx('edit_expense')
+                load: () => new CreateCategoryInOrEx(InExEnum.edit_expense)
             },
             {
                 route: '#/create_category_income_edit',
                 title: 'Редактирование категории доходов',
                 template: 'templates/category_in_or_ex.html',
-                load: () => new CreateCategoryInOrEx("edit_income")
+                load: () => new CreateCategoryInOrEx(InExEnum.edit_income)
             },
             {
                 route: '#/create_income',
                 title: 'Создание дохода',
                 template: 'templates/create_in_or_ex.html',
-                load: () => new CreateInOrEx('income')
+                load: () => new CreateInOrEx(InExEnum.income)
             },
             {
                 route: '#/create_expense',
                 title: 'Создание расхода',
                 template: 'templates/create_in_or_ex.html',
-                load: () => new CreateInOrEx('expense')
+                load: () => new CreateInOrEx(InExEnum.expense)
             },
             {
                 route: '#/create_income_edit',
                 title: 'Редактирование дохода',
                 template: 'templates/create_in_or_ex.html',
-                load: () => new CreateInOrEx('edit_income')
+                load: () => new CreateInOrEx(InExEnum.edit_income)
             },
             {
                 route: '#/create_expense_edit',
                 title: 'Редактирование расхода',
                 template: 'templates/create_in_or_ex.html',
-                load: () => new CreateInOrEx('edit_expense')
+                load: () => new CreateInOrEx(InExEnum.edit_expense)
             },
         ]
 
@@ -114,8 +116,8 @@ export class Router {
 
         if (urlRoute === '#/logout') {
             const result = await Auth.logout();
-            localStorage.removeItem(words.userInfo);
-            localStorage.removeItem(words.userInfo);
+            localStorage.removeItem(UserInfoEnum.userInfo);
+            localStorage.removeItem(UserInfoEnum.userInfo);
             window.location.href = '#/login';
             return;
         }

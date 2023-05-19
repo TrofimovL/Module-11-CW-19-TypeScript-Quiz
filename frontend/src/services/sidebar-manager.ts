@@ -1,5 +1,5 @@
 import {CustomHttp} from "./custom-http";
-import {words} from "../components/words";
+import {ConfigEnum} from "../enums/config.enum";
 const $ = require('../modules/jquery-3.6.4.min');
 
 export class SidebarManager {
@@ -45,7 +45,7 @@ export class SidebarManager {
 
     public static async setBalance(): Promise<boolean> {
         try {
-            const result = await CustomHttp.request(words.b_host + words.balance);
+            const result = await CustomHttp.request(ConfigEnum.backendHost + 'balance');
             $('#money').text(result.balance);
             return true;
         } catch (e) {
